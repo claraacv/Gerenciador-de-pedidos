@@ -1,0 +1,75 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    env_file:
+      - .env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: always
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin_db
+    env_file:
+      - .env
+    depends_on:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: ${DB_USER}
+      PMA_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "8080:80"
+    restart: always
+
+  node:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend
+    working_dir: /home/node/app
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: development
+      PORT: 8888
+      DB_HOST: mysql
+      DB_PORT: 3306
+    volumes:
+      - ./backend:/home/node/app
+      - /home/node/app/node_modules
+    ports:
+      - "8888:8888"
+    command: ["npm", "run", "dev"]
+    depends_on:
+      - mysql
+    restart: always
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    working_dir: /home/node/app
+    environment:
+      NODE_ENV: development
+    volumes:
+      - ./frontend:/home/node/app
+      - /home/node/app/node_modules
+    ports:
+      - "3000:3000"
+    command: npm start
+    restart: always
+
+
+
+volumes:
+  mysql_data:
