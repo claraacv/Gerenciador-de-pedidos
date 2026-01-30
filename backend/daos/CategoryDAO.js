@@ -12,6 +12,14 @@ class CategoryDAO{
     async getAll(){
         return await Category.findAll();
     }
+
+    async update(id, data){
+        return await Category.update(data, {where: {id}});
+    }
+
+    async delete(id){
+        return await Category.destroy({where:{id}});
+    }
 }
 
 export default new CategoryDAO();

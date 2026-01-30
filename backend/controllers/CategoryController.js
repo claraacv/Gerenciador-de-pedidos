@@ -29,6 +29,28 @@ class CategoryController{
             return res.status(400).json({message: "There was an error: " + error});
         }
     }
+
+    async update(req, res){
+        try{
+            const {name} = req.body;
+            const {id} = req.params;
+
+            const updatedCategory = await CategoryDAO.update(id, {name});
+            return res.status(200).json(updatedCategory);
+        } catch(error){
+            return res.status(400).json({message: "There was an error " + error});
+        }
+    }
+
+    async delete(req, res){
+        try{
+            const {id} = req.params;
+            const deletedCategory = await CategoryDAO.delete(id);
+            return res.status(200).json(deletedCategory);
+        } catch(error){
+            return res.status(400).json({message: "There was an error " + error});
+        }
+    }
 }
 
 export default new CategoryController();
