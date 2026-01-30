@@ -1,4 +1,4 @@
-import Category from "../models/category.js";
+import {Category, Product} from "../models/Relations.js";
 
 class CategoryDAO{
     async create(data){
@@ -19,6 +19,14 @@ class CategoryDAO{
 
     async delete(id){
         return await Category.destroy({where:{id}});
+    }
+
+    async getProducts(id){
+        return await Category.findByPk(id, {
+            include:{
+                model: Product
+            }
+        })
     }
 }
 
