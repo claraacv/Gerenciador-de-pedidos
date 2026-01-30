@@ -12,6 +12,8 @@ const Category = db.define("categories", {
         type: Sequelize.STRING,
         allowNull: false
     }
+},{
+    timestamps: false
 });
 
 export default Category;
