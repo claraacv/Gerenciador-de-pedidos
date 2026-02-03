@@ -31,7 +31,7 @@ services:
     restart: always
 
   node:
-    build: 
+    build:
       context: ./backend
       dockerfile: Dockerfile
     container_name: backend
@@ -69,8 +69,6 @@ services:
       - "3000:3000"
     command: ["npm", "run", "dev"]
     restart: always
-
-
 
 volumes:
   mysql_data:
