@@ -53,22 +53,5 @@ services:
       - mysql
     restart: always
 
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    container_name: frontend
-    working_dir: /home/node/app
-    environment:
-      NODE_ENV: development
-      CHOKIDAR_USEPOLLING: "true"
-    volumes:
-      - ./frontend:/home/node/app
-      - /home/node/app/node_modules
-    ports:
-      - "3000:3000"
-    command: ["npm", "run", "dev"]
-    restart: always
-
 volumes:
   mysql_data:
